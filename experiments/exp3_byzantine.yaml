@@ -1,0 +1,12 @@
+# Experiment 3: Byzantine resilience — 20% and 30% malicious clients
+num_clients: 10
+num_rounds: 100
+local_epochs: 5
+local_batch_size: 32
+lr: 0.01
+alpha_dirichlet: 0.5
+alpha_poc: 0.5
+beta_poc: 0.5
+byzantine_fraction: 0.2    # change to 0.3 for second run
+byzantine_attack: sign_flip
+seed: 42

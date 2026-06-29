@@ -1,0 +1,12 @@
+# Experiment 2: Sweep Dirichlet alpha — fairness index vs heterogeneity level
+# Run once per alpha value: 0.1, 0.3, 0.5, 1.0, 10.0 (near-IID)
+num_clients: 10
+num_rounds: 100
+local_epochs: 5
+local_batch_size: 32
+lr: 0.01
+alpha_dirichlet: 0.5       # change per run
+alpha_poc: 0.5
+beta_poc: 0.5
+byzantine_fraction: 0.0
+seed: 42
