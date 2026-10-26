@@ -35,11 +35,20 @@ class ConvergenceTracker:
         self.rounds = []
         self.accuracies = []
         self.fairness = []
+        self.last_raw = None  # stores last round's per-client breakdown
 
     def log(self, rnd, acc, fair):
         self.rounds.append(rnd)
         self.accuracies.append(acc)
         self.fairness.append(fair)
+
+    def log_raw(self, raw, weights):
+        self.last_raw = {
+            "val_acc":  list(raw["val_acc"]),
+            "grad_div": list(raw["grad_div"]),
+            "raw":      list(raw["raw"]),
+            "weights":  list(weights),
+        }
 
     def to_dict(self):
         return {"round": self.rounds, "accuracy": self.accuracies, "fairness": self.fairness}

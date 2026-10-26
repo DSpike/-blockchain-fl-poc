@@ -1,0 +1,11 @@
+# Experiment 2c: alpha sweep — near-IID
+num_clients: 10
+num_rounds: 100
+local_epochs: 2
+local_batch_size: 128
+lr: 0.01
+alpha_dirichlet: 10.0
+alpha_poc: 0.5
+beta_poc: 0.5
+byzantine_fraction: 0.0
+seed: 42

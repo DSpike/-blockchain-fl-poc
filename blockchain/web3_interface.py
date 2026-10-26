@@ -19,7 +19,8 @@ def load_contract(w3, abi_path, address):
 def submit_contribution(contract, client_addr, round_num, model_hash_hex, contribution_score, owner_addr, gas=300_000):
     """Store a client's contribution proof on-chain."""
     contrib_e4 = int(contribution_score * 10_000)
-    model_hash = bytes.fromhex(model_hash_hex.lstrip("0x"))[:32].ljust(32, b'\x00')
+    clean_hex = model_hash_hex[2:] if model_hash_hex.startswith("0x") else model_hash_hex
+    model_hash = bytes.fromhex(clean_hex)[:32]
     tx = contract.functions.submit(round_num, model_hash, contrib_e4).transact(
         {"from": client_addr, "gas": gas})
     return tx

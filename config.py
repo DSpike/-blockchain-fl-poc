@@ -2,17 +2,17 @@
 
 # Federated learning
 NUM_CLIENTS = 10
-NUM_ROUNDS = 100
-LOCAL_EPOCHS = 5
-LOCAL_BATCH_SIZE = 32
-LEARNING_RATE = 0.01
+NUM_ROUNDS = 50          # paper uses 50 rounds
+LOCAL_EPOCHS = 3         # paper uses 3 local epochs
+LOCAL_BATCH_SIZE = 32    # paper uses batch 32
+LEARNING_RATE = 1e-3     # paper uses lr 1e-3
 
 # Non-IID partitioning (Dirichlet)
 DIRICHLET_ALPHA = 0.5          # 0.1=extreme non-IID, 1.0=mild, 100=IID
 
-# PoC contribution score
-ALPHA_ACC = 0.5                # weight for validation accuracy term
-BETA_DIV = 0.5                 # weight for gradient divergence term
+# PoC contribution score (paper default: alpha=0.7, beta=0.3)
+ALPHA_ACC = 0.7                # weight for validation accuracy term
+BETA_DIV  = 0.3                # weight for gradient norm term
 
 # Byzantine simulation
 BYZANTINE_FRACTION = 0.2       # fraction of malicious clients per round

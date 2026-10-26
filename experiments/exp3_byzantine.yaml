@@ -8,5 +8,5 @@ alpha_dirichlet: 0.5
 alpha_poc: 0.5
 beta_poc: 0.5
 byzantine_fraction: 0.2    # change to 0.3 for second run
-byzantine_attack: sign_flip
+byzantine_attack: gradient_poison
 seed: 42

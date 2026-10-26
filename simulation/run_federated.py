@@ -43,7 +43,7 @@ def run(cfg):
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"Device: {device} | Clients: {cfg['num_clients']} | α={cfg['alpha_dirichlet']}")
 
-    client_loaders, val_loader, _ = build_client_loaders(
+    client_loaders, val_loader, _, full_val_loader = build_client_loaders(
         alpha=cfg["alpha_dirichlet"],
         num_clients=cfg["num_clients"],
         batch_size=cfg["local_batch_size"],
@@ -89,12 +89,12 @@ def run(cfg):
         reward_pool[keep_mask] += active_scores * REWARD_PER_ROUND
 
         # --- evaluate ---
-        acc = accuracy(global_model, val_loader, device)
+        acc = accuracy(global_model, full_val_loader, device)
         fair = fairness_index(raw["raw"][keep_mask], active_scores)
         tracker.log(rnd, acc, fair)
 
         if rnd % 10 == 0:
-            print(f"Round {rnd:3d} | Acc: {acc:.4f} | Fairness: {fair:.4f}")
+            print(f"Round {rnd:3d} | Acc: {acc:.4f} | Fairness: {fair:.4f}", flush=True)
 
     return tracker, reward_pool
 

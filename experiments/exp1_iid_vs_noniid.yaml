@@ -1,8 +1,8 @@
 # Experiment 1: IID vs non-IID — show PoC score advantage under heterogeneity
 num_clients: 10
 num_rounds: 100
-local_epochs: 5
-local_batch_size: 32
+local_epochs: 2
+local_batch_size: 128
 lr: 0.01
 alpha_dirichlet: 0.1       # extreme non-IID
 alpha_poc: 0.5

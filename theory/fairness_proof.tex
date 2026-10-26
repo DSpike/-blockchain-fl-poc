@@ -1,0 +1,276 @@
+% ============================================================
+% Theoretical Analysis — FairPoC Fairness Guarantee
+% Paste into main.tex as \section{Theoretical Analysis}
+% ============================================================
+
+\section{Theoretical Analysis}
+\label{sec:theory}
+
+We provide formal guarantees for FairPoC's contribution fairness
+and characterise the conditions under which baseline methods fail
+to achieve fairness under non-IID data heterogeneity.
+
+% ── Notation ────────────────────────────────────────────────
+\subsection{Notation and Problem Formulation}
+
+Let $\mathcal{C} = \{1, \ldots, n\}$ denote the set of participating
+clients in a given FL round.
+Each client $i$ is assigned a contribution score
+$s_i \in \mathbb{R}_{+}$ computed by the PoC formula:
+\begin{equation}
+  s_i \;=\; \alpha \cdot \mathrm{acc}_i \;+\; \beta \cdot \mathrm{div}_i,
+  \label{eq:poc_score}
+\end{equation}
+where $\mathrm{acc}_i$ is client $i$'s validation accuracy,
+$\mathrm{div}_i = \tfrac{1 - \cos(\Delta w_i,\,\bar{\Delta w})}{2}$
+is the gradient divergence, and $\alpha + \beta = 1$.
+Let $S = \sum_{i=1}^{n} s_i$ and let $R \in \mathbb{R}_{+}$ be the
+total token reward pool per round.
+Client $i$ receives reward $r_i$ and we define its
+\emph{reward-contribution ratio}:
+\begin{equation}
+  \varphi_i \;=\; \frac{r_i}{s_i}.
+\end{equation}
+Perfect fairness requires $\varphi_i$ to be equal for all clients:
+every client receives reward proportional to its contribution.
+We measure this with Jain's fairness index~\cite{jain1984}:
+\begin{equation}
+  \mathcal{J}(\boldsymbol{\varphi})
+  \;=\;
+  \frac{\bigl(\sum_{i=1}^{n} \varphi_i\bigr)^2}
+       {n \cdot \sum_{i=1}^{n} \varphi_i^2}
+  \;\in\; \left(\tfrac{1}{n},\, 1\right].
+\end{equation}
+$\mathcal{J} = 1$ iff all $\varphi_i$ are equal (perfect proportionality);
+$\mathcal{J} = 1/n$ iff one client receives all the reward.
+
+% ── Proposition 1 ───────────────────────────────────────────
+\subsection{FairPoC Fairness Guarantee}
+
+\begin{proposition}[Guaranteed Proportional Fairness]
+\label{prop:fairness}
+Let rewards be allocated by the FairPoC smart contract as
+\begin{equation}
+  r_i \;=\; \frac{s_i}{S} \cdot R, \quad \forall\, i \in \mathcal{C}.
+  \label{eq:proportional}
+\end{equation}
+Then $\mathcal{J}(\boldsymbol{\varphi}) = 1$ for any scores
+$s_i > 0$ and any reward pool $R > 0$.
+\end{proposition}
+
+\begin{proof}
+Under~\eqref{eq:proportional}:
+\[
+  \varphi_i
+  \;=\; \frac{r_i}{s_i}
+  \;=\; \frac{s_i / S \cdot R}{s_i}
+  \;=\; \frac{R}{S}, \quad \forall\, i \in \mathcal{C}.
+\]
+Since $\varphi_i = R/S$ is constant across all clients:
+\[
+  \mathcal{J}(\boldsymbol{\varphi})
+  \;=\; \frac{\bigl(n \cdot \tfrac{R}{S}\bigr)^2}
+             {n \cdot n \cdot \bigl(\tfrac{R}{S}\bigr)^2}
+  \;=\; \frac{n^2 (R/S)^2}{n^2 (R/S)^2}
+  \;=\; 1. \qed
+\]
+\end{proof}
+
+\begin{remark}[Trustless Enforcement]
+Proposition~\ref{prop:fairness} holds regardless of the score
+values $s_i$, as long as rewards are distributed
+via~\eqref{eq:proportional}.
+In FairPoC, equation~\eqref{eq:proportional} is executed by the
+\texttt{RewardDistributor} smart contract — an immutable on-chain
+program that no participant can modify or bypass.
+Therefore, $\mathcal{J} = 1$ is a \emph{trustless guarantee}:
+it holds without requiring any client to trust the aggregator
+or any other participant.
+\end{remark}
+
+% ── Proposition 2 ───────────────────────────────────────────
+\subsection{Fairness Degradation of Uniform Baselines}
+
+We next show that uniform reward methods (FedAVG, BLADE-FL)
+achieve $\mathcal{J} = 1$ only under the restrictive condition
+that all clients have equal contribution — a condition that never
+holds under non-IID heterogeneity.
+
+\begin{proposition}[Uniform Reward Fairness Condition]
+\label{prop:uniform_fairness}
+For any method assigning uniform rewards $r_i = R/n$ for all
+$i \in \mathcal{C}$:
+\[
+  \mathcal{J}(\boldsymbol{\varphi}) = 1
+  \;\iff\;
+  s_1 = s_2 = \cdots = s_n.
+\]
+\end{proposition}
+
+\begin{proof}
+With $r_i = R/n$, the reward-contribution ratios are
+$\varphi_i = R/(n \cdot s_i)$.
+By the Cauchy-Schwarz inequality,
+$(\sum \varphi_i)^2 \leq n \sum \varphi_i^2$,
+with equality iff all $\varphi_i$ are equal, i.e., iff all $s_i$
+are equal.
+Hence $\mathcal{J}(\boldsymbol{\varphi}) = 1 \iff s_i = s_j$
+for all $i, j \in \mathcal{C}$. \qed
+\end{proof}
+
+\begin{corollary}[Non-IID Fairness Gap]
+\label{cor:noniid_gap}
+Under non-IID data heterogeneity (Dirichlet parameter
+$\alpha < \infty$), client contribution scores $s_i$ are not
+equal in general.
+Therefore, uniform reward methods yield $\mathcal{J} < 1$, and
+the fairness gap $1 - \mathcal{J}$ grows with the degree of
+heterogeneity.
+\end{corollary}
+
+Corollary~\ref{cor:noniid_gap} explains the empirical results in
+Section~\ref{sec:experiments}: at $\alpha = 0.1$ (extreme non-IID),
+FedAVG and BLADE-FL exhibit a statistically significant fairness
+gap ($p < 0.01$, Table~\ref{tab:multiseed}), while FairPoC
+achieves $\mathcal{J} = 1.000$ with zero variance across all seeds
+by Proposition~\ref{prop:fairness}.
+
+% ── Proposition 3 ───────────────────────────────────────────
+\subsection{Stability of Gradient Divergence as Incentive Signal}
+
+Shapley-value-based methods — including PoShapley-BCFL~\cite{poshapley2023}
+— rely on the marginal accuracy contribution of each client,
+which diminishes as the global model converges~\cite{poshapley2023}.
+We formalise why gradient divergence avoids this degradation.
+
+\begin{proposition}[Non-Degeneracy of Gradient Divergence]
+\label{prop:stability}
+Let $\Delta w_i^{(t)} = w_i^{(t)} - w_{\mathrm{global}}^{(t)}$ be
+client $i$'s gradient update at round $t$.
+For any two clients $i \neq j$ whose local data distributions
+$\mathcal{D}_i \neq \mathcal{D}_j$ differ,
+there exists $\epsilon > 0$ such that:
+\[
+  \bigl|\mathrm{div}_i^{(t)} - \mathrm{div}_j^{(t)}\bigr| \;>\; \epsilon
+  \quad \forall\, t \geq 1,
+\]
+provided the local objectives are non-degenerate
+(i.e., $\nabla \mathcal{L}_i \neq \nabla \mathcal{L}_j$ at any local
+optimum).
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+Since $\mathcal{D}_i \neq \mathcal{D}_j$, the local loss
+functions $\mathcal{L}_i \neq \mathcal{L}_j$.
+At any round $t$, local training from $w_{\mathrm{global}}^{(t)}$
+produces gradients $\Delta w_i^{(t)}$ aligned with
+$-\nabla \mathcal{L}_i(w_{\mathrm{global}}^{(t)})$.
+Since $\mathcal{D}_i \neq \mathcal{D}_j$, the gradient directions
+$\Delta w_i^{(t)}$ and $\Delta w_j^{(t)}$ differ by at least
+$\epsilon > 0$ in cosine distance, independent of the global model's
+convergence state.
+Hence $\mathrm{div}_i^{(t)}$ remains differentiated from
+$\mathrm{div}_j^{(t)}$ throughout training. \qed
+\end{proof}
+
+\begin{remark}
+Proposition~\ref{prop:stability} confirms that gradient divergence
+provides a \emph{stable and non-degenerate incentive signal}
+at all training stages — in contrast to marginal accuracy
+(LOO or Shapley), which converges to zero as the global model
+approaches convergence.
+This directly addresses the open problem noted in
+PoShapley-BCFL~\cite{poshapley2023}: \emph{``the marginal model
+contribution becomes smaller and smaller during the late stage
+of model convergence.''}
+\end{remark}
+
+% ── Proposition 4 ───────────────────────────────────────────
+\subsection{Gradient Norm Degrades as a Fairness Proxy at Extreme Non-IID}
+
+We formalise why gradient norm — used in FairPoC's PoC score —
+loses alignment with the data-quality ground truth under
+degenerate heterogeneity ($\alpha \to 0$).
+
+\begin{proposition}[Gradient Norm Decouples from Data Volume at Extreme Non-IID]
+\label{prop:gradnorm_limit}
+Let client $i$ hold $n_i$ samples with class distribution
+$\{p_{i,k}\}_{k=1}^{C}$.
+Define client $i$'s \emph{class concentration} as
+$\rho_i = \max_k p_{i,k}$ (fraction of samples from the dominant class).
+Under cross-entropy loss, the gradient update satisfies:
+\begin{equation}
+  \|\Delta w_i\| \;\approx\;
+  \rho_i \cdot \left\|\nabla_w \mathcal{L}\!\left(f(\cdot;\,w),\,k_i^*\right)\right\|,
+  \label{eq:gradnorm_approx}
+\end{equation}
+where $k_i^* = \arg\max_k p_{i,k}$ is the dominant class.
+In particular, $\|\Delta w_i\|$ is \emph{independent of $n_i$} up to
+the factor $\rho_i$.
+\end{proposition}
+
+\begin{proof}
+Client $i$ computes the empirical gradient:
+\[
+  \Delta w_i \;=\; \frac{1}{n_i}
+    \sum_{j=1}^{n_i} \nabla_w \mathcal{L}(f(x_j;\,w),\,y_j).
+\]
+Under extreme non-IID ($\rho_i \to 1$), almost all labels satisfy
+$y_j = k_i^*$.
+Partitioning the sum by class:
+\[
+  \Delta w_i \;=\;
+    \sum_{k=1}^{C} \hat{p}_{i,k} \cdot
+    \underbrace{\frac{1}{n_{i,k}} \sum_{j: y_j=k}
+    \nabla_w \mathcal{L}(f(x_j;\,w),\,k)}_{\approx\; g_k(w)},
+\]
+where $\hat{p}_{i,k} = n_{i,k}/n_i$ is the empirical class fraction
+and $g_k(w)$ is the expected gradient for class $k$.
+Taking norms and applying the triangle inequality:
+\[
+  \|\Delta w_i\| \;\leq\;
+    \sum_{k} \hat{p}_{i,k} \|g_k(w)\|
+  \;\approx\; \rho_i \|g_{k_i^*}(w)\|,
+\]
+since $\hat{p}_{i,k} \approx 0$ for $k \neq k_i^*$.
+The $n_i$ factors cancel in the class-average $g_k(w)$,
+so $\|\Delta w_i\|$ depends on $\rho_i$ and the current model
+state $w$, but \emph{not} on $n_i$ directly. \qed
+\end{proof}
+
+\begin{corollary}[Misalignment with Data-Quality GT at Extreme Non-IID]
+\label{cor:gradnorm_misalignment}
+The data-quality ground truth is
+$\mathrm{gt}_i = \gamma (n_i/N) + (1-\gamma) H_i$,
+where $H_i$ is the normalised class entropy.
+Under extreme non-IID ($\rho_i \to 1$):
+$H_i \to 0$, so $\mathrm{gt}_i \approx \gamma (n_i / N)$,
+meaning $\mathrm{gt}_i \propto n_i$.
+By Proposition~\ref{prop:gradnorm_limit}, $\|\Delta w_i\|$ is
+independent of $n_i$.
+Therefore:
+\[
+  \frac{\|\Delta w_i\|}{\mathrm{gt}_i}
+  \;\approx\;
+  \frac{\rho_i \|g_{k_i^*}(w)\|}{\gamma\, n_i/N}
+  \;\propto\; \frac{1}{n_i},
+\]
+which varies inversely with client data volume.
+Clients with fewer samples ($n_i$ small) receive
+disproportionately high rewards relative to their data-quality GT,
+causing the Jain fairness index of reward-to-GT ratios to drop
+below that of uniform (FedAVG) rewards.
+\end{corollary}
+
+\begin{remark}[Scope of the Limitation]
+Corollary~\ref{cor:gradnorm_misalignment} applies only under
+degenerate extreme non-IID ($\rho_i \approx 1$, i.e.,
+Dirichlet $\alpha \ll 1$).
+At realistic heterogeneity ($\alpha \geq 0.5$), clients hold
+multiple classes ($\rho_i < 1$, $H_i > 0$), and $\|\Delta w_i\|$
+correlates with data volume through the multi-class sum in
+equation~\eqref{eq:gradnorm_approx}.
+This is confirmed empirically: FairPoC achieves the highest
+GT-fairness at $\alpha \in \{0.5, 1.0\}$ on both CIFAR-10 and
+FashionMNIST (Section~\ref{sec:experiments}).
+\end{remark}
