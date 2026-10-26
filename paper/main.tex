@@ -25,10 +25,14 @@
 \title{FairPoC: Non-IID-Aware Proof of Contribution for\\
 Auditable Federated Learning via ERC-20 Smart Contracts}
 
-\author{\IEEEauthorblockN{Derara Senay Shanka and Peter Shaojui Wang}
-\IEEEauthorblockA{Department of Computer Science and Information Engineering\\
-National Taiwan University of Science and Technology, Taipei 106, Taiwan\\
-Email: derjan06@gmail.com; shaojuiwang@gmail.com}}
+% ICBC 2027 IS DOUBLE-BLIND. Identifying author block kept below as
+% comments; restore it for the camera-ready version.
+%\author{\IEEEauthorblockN{Derara Senay Shanka and Peter Shaojui Wang}
+%\IEEEauthorblockA{Department of Computer Science and Information Engineering\\
+%National Taiwan University of Science and Technology, Taipei 106, Taiwan\\
+%Email: derjan06@gmail.com; shaojuiwang@gmail.com}}
+\author{\IEEEauthorblockN{Anonymous Submission}
+\IEEEauthorblockA{Paper ID: \textit{(assigned at submission)}}}
 
 \maketitle
 
@@ -110,16 +114,31 @@ diversity signals.
 
 We address these gaps with \textbf{FairPoC}:
 \begin{enumerate}
-  \item A non-IID-aware PoC score combining validation accuracy with
-        gradient norm -- a convergence-robust diversity signal stable
-        after model saturation, unlike Shapley/LOO-based methods.
-  \item Auditable reward distribution via ERC-20 token contracts,
-        requiring no custom consensus; the contract creates a publicly
-        verifiable, immutable audit trail of every reward transfer.
-  \item On-chain stake-and-slash for economic deterrence --- extending
-        the enforcement principle of FLock~\cite{dong2022flock} ---
-        integrated with a formally-motivated PoC score and evaluated
-        on three attack types across two datasets.
+  \item \textbf{A contribution signal that stays discriminative at
+        convergence.} We score clients by normalised gradient norm, a
+        heterogeneity-driven quantity that does not vanish once the
+        global model saturates. Marginal-utility metrics (Shapley,
+        leave-one-out) lose the ability to separate clients at
+        precisely the point where reward allocation must still be
+        enforced.
+  \item \textbf{A non-circular protocol for evaluating contribution
+        fairness.} GT-Fairness measures alignment between
+        \emph{ground-truth} data quality and reward, rather than
+        between reward and the system's own score. It is therefore
+        distinct from dispersion measures such as the Gini coefficient
+        of payouts~\cite{he2026blockflmd2c}, which are minimised by
+        paying every client equally regardless of contribution.
+  \item \textbf{Gradient-magnitude scoring is a manipulable primitive,
+        and median-clip normalisation corrects it.} We characterise the
+        self-amplifying failure mode of max-norm scoring under gradient
+        inflation and show that median-clip removes the attacker's
+        advantage, driving net gain below $1\times$.
+  \item \textbf{Practical on-chain enforcement.} Stake-and-slash
+        through standard ERC-20 interfaces, requiring no custom
+        consensus, with measured gas costs. We claim deployment
+        practicality here rather than novelty: on-chain reward
+        enforcement is already established~\cite{rashid2025tffl,
+        dong2022flock}.
 \end{enumerate}
 
 %----------------------------------------------------------------------
@@ -168,13 +187,13 @@ FLock targets Byzantine poisoning defence with peer-to-peer model
 evaluation; FairPoC targets \emph{contribution-proportional reward
 fairness} under non-IID data, pairing slash with a non-IID-aware
 PoC score and a non-circular GT-Fairness evaluation protocol.
-FairPoC differs from all the above in four ways: (1)~we use standard
-ERC-20 token interfaces rather than custom consensus, making deployment
-practical on existing chains; (2)~we replace Shapley and weight-update
-scalars with normalised gradient norm, which is stable at convergence;
-(3)~we explicitly evaluate under four Dirichlet non-IID regimes;
-(4)~unlike FLock, we pair slash with a formally-motivated PoC score
-that targets fairness rather than Byzantine exclusion alone.
+Relative to this line of work, FairPoC replaces Shapley values and
+weight-update scalars with a normalised gradient norm that remains
+discriminative at convergence, and deploys through standard ERC-20
+interfaces rather than a custom consensus rule. Earlier schemes that
+place contribution evaluation on chain do so chiefly to remove reliance
+on a semi-trusted scoring server~\cite{huang2024bcontrib}, which is a
+different objective from the one pursued here.
 
 \subsection{Reputation-Based Trust and Incentives in Blockchain FL}
 
@@ -572,6 +591,12 @@ Table~\ref{tab:adversarial} reports accuracy, GT-Fairness, and
 net-gain (reward earned minus stake lost relative to fair share; values
 below $1.0\times$ make attacking economically irrational).
 
+Manipulating a contribution metric in order to inflate one's own share
+of the reward pool is an established attack
+class~\cite{ace2024attack, fragility2025contrib}. Our concern is
+narrower: the specific form this takes when the metric is a gradient
+magnitude, and what removes it.
+
 Under GradScale, max-norm scoring is self-amplifying: the attacker
 becomes the normalisation maximum and suppresses honest clients to
 GradNorm$\approx 0.1$, collapsing accuracy to 17.83\% --- worse than
@@ -592,6 +617,14 @@ accuracy (89.1\%). LabelFlip shows mild over-reward ($1.12\times$)
 because at $\alpha_D = 0.1$ honest clients also score low on the shared
 validation set --- a known limitation of accuracy-based scoring under
 severe data skew.
+
+% ==================================================================
+% PENDING VERIFICATION: generalisation of the GradScale failure mode
+% to CLP-aware bonus schedules whose detector is built from weighted
+% squared gradient norms (Carpe Diem / R3T, cite nguyen2026carpediem).
+% Add the attack and budget-drain table here once the experiment has
+% been run. Do NOT write this claim until it reproduces.
+% ==================================================================
 
 \subsection{Sensitivity to $\beta$}
 \label{subsec:ablation_beta}

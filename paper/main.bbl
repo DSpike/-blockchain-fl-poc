@@ -81,6 +81,17 @@ Z.~Cheng, Y.~Liu, C.~Wu, Y.~Pan, L.~Zhao, and C.~Zhu, ``{PoShapley-BCFL}: A
   Computer Science, vol. 14448.\hskip 1em plus 0.5em minus 0.4em\relax
   Springer, 2023, pp. 527--540.
 
+\bibitem{he2026blockflmd2c}
+L.~He, ``Blockchain-enabled verifiable federated learning with
+  multi-dimensional incentive and dynamic consensus for privacy-sensitive
+  domains,'' \emph{Discover Computing}, vol.~29, p. 383, 2026.
+
+\bibitem{rashid2025tffl}
+M.~M. Rashid, Y.~Xiang, M.~P. Uddin, J.~Tang, K.~Sood, and L.~Gao,
+  ``Trustworthy and fair federated learning via reputation-based consensus and
+  adaptive incentives,'' \emph{IEEE Transactions on Information Forensics and
+  Security}, vol.~20, pp. 2868--2882, 2025.
+
 \bibitem{dong2022flock}
 N.~Dong, J.~Sun, Z.~Wang, S.~Zhang, and S.~Zheng, ``{FLock}: Defending
   malicious behaviors in federated learning with blockchain,'' in
@@ -107,11 +118,11 @@ N.~Dong, Z.~Wang, J.~Sun, M.~Kampffmeyer, W.~Knottenbelt, and E.~Xing,
   blockchain,'' \emph{IEEE Transactions on Artificial Intelligence}, 2024,
   arXiv:2307.00543.
 
-\bibitem{rashid2025tffl}
-M.~M. Rashid, Y.~Xiang, M.~P. Uddin, J.~Tang, K.~Sood, and L.~Gao,
-  ``Trustworthy and fair federated learning via reputation-based consensus and
-  adaptive incentives,'' \emph{IEEE Transactions on Information Forensics and
-  Security}, vol.~20, pp. 2868--2882, 2025.
+\bibitem{huang2024bcontrib}
+L.~Huang, Y.~Wang, and J.~Hou, ``Blockchain-based contribution evaluation in
+  federated learning,'' in \emph{2024 9th International Conference on
+  Intelligent Computing and Signal Processing (ICSP)}.\hskip 1em plus 0.5em
+  minus 0.4em\relax IEEE, 2024, pp. 1155--1160.
 
 \bibitem{rashid2026tafl}
 M.~M. Rashid, M.~P. Uddin, Y.~Xiang, K.~Sood, Y.~Zhang, and L.~Gao, ``{TAFL}:
@@ -153,5 +164,14 @@ A.~Ghorbani and J.~Zou, ``Data shapley: Equitable valuation of data for machine
 R.~Jain, D.-M. Chiu, and W.~Hawe, ``A quantitative measure of fairness and
   discrimination for resource allocation in shared computer systems,'' 1984,
   technical Report DEC-TR-301, Digital Equipment Corporation.
+
+\bibitem{ace2024attack}
+{\color{red}[AUTHORS TO BE FILLED]}, ``{ACE}: A model poisoning attack on
+  contribution evaluation methods in federated learning,'' \emph{arXiv preprint
+  arXiv:2405.20975}, 2024.
+
+\bibitem{fragility2025contrib}
+------, ``On the fragility of contribution score computation in federated
+  learning,'' \emph{arXiv preprint arXiv:2509.19921}, 2025.
 
 \end{thebibliography}
