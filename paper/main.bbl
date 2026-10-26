@@ -107,6 +107,29 @@ N.~Dong, Z.~Wang, J.~Sun, M.~Kampffmeyer, W.~Knottenbelt, and E.~Xing,
   blockchain,'' \emph{IEEE Transactions on Artificial Intelligence}, 2024,
   arXiv:2307.00543.
 
+\bibitem{rashid2025tffl}
+M.~M. Rashid, Y.~Xiang, M.~P. Uddin, J.~Tang, K.~Sood, and L.~Gao,
+  ``Trustworthy and fair federated learning via reputation-based consensus and
+  adaptive incentives,'' \emph{IEEE Transactions on Information Forensics and
+  Security}, vol.~20, pp. 2868--2882, 2025.
+
+\bibitem{rashid2026tafl}
+M.~M. Rashid, M.~P. Uddin, Y.~Xiang, K.~Sood, Y.~Zhang, and L.~Gao, ``{TAFL}:
+  Trust-aware federated learning for anomalous client detection, isolation, and
+  recovery,'' \emph{IEEE Transactions on Information Forensics and Security},
+  2026, early access.
+
+\bibitem{gtgshapley2022}
+Z.~Liu, Y.~Chen, H.~Yu, Y.~Liu, and L.~Cui, ``{GTG-Shapley}: Efficient and
+  accurate participant contribution evaluation in federated learning,''
+  \emph{ACM Transactions on Intelligent Systems and Technology}, vol.~13,
+  no.~4, pp. 1--21, 2022.
+
+\bibitem{geimer2025volatility}
+A.~Geimer, B.~Fiz, and R.~State, ``On the volatility of {Shapley}-based
+  contribution metrics in federated learning,'' in \emph{International Joint
+  Conference on Neural Networks (IJCNN)}, 2025, arXiv:2405.08044.
+
 \bibitem{erc20}
 F.~Vogelsteller and V.~Buterin, ``{EIP-20}: Token standard,'' Ethereum
   Improvement Proposals, 2015, \url{https://eips.ethereum.org/EIPS/eip-20}.

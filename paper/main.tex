@@ -176,6 +176,44 @@ scalars with normalised gradient norm, which is stable at convergence;
 (4)~unlike FLock, we pair slash with a formally-motivated PoC score
 that targets fairness rather than Byzantine exclusion alone.
 
+\subsection{Reputation-Based Trust and Incentives in Blockchain FL}
+
+A parallel line of work scores clients by \emph{trustworthiness} rather
+than by contribution. TFFL~\cite{rashid2025tffl} builds a hybrid
+subjective-logic reputation from time-decayed counts of positive and
+negative interactions, weights it by data quality (Earth Mover's
+Distance), performance and reliability, and distributes rewards through
+six Solidity contracts using cooperative game theory with Nash, Pareto
+and core guarantees. TAFL~\cite{rashid2026tafl} extends the same
+reputation machinery into a detection, probationary-isolation and
+gated-reintegration lifecycle, committing reward tuples to an auditable
+ledger. Both are non-IID aware and both enforce rewards on chain.
+FairPoC therefore does not claim novelty from that combination.
+
+The distinction lies in what the score measures. Reputation in TFFL
+accumulates from whether an update was \emph{flagged} by an attack
+detector, which answers whether a client is trustworthy.
+Contribution-proportional reward requires a different quantity, namely
+how much each client added. TFFL allocates that share by Shapley value,
+and this is where the signal fails. Marginal-contribution scores are
+driven by the improvement a client makes to global accuracy, and that
+improvement vanishes for every client simultaneously as the model
+saturates, so the scores lose their ability to discriminate exactly when
+the model is most valuable. The degeneracy is already acknowledged in the
+Shapley literature, though not named as such: GTG-Shapley~\cite{gtgshapley2022}
+discards any round whose total marginal gain falls below a threshold and
+returns \emph{zero} for every participant in it, and Geimer et
+al.~\cite{geimer2025volatility} report that Shapley-based allocations are
+unstable across aggregation rules. Figure~\ref{fig:stability} quantifies
+the same effect over training time: by round 30 of 50 the leave-one-out
+signal has collapsed to near zero for every client, while the normalised
+gradient norm remains discriminative throughout.
+
+FairPoC's contribution is thus not the pairing of non-IID-aware scoring
+with on-chain enforcement, which TFFL already provides, but a contribution
+signal that remains non-degenerate at the point where reward allocation
+and slashing must still be enforceable.
+
 %----------------------------------------------------------------------
 \section{System Design}
 
