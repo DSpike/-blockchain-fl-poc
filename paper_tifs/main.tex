@@ -65,14 +65,21 @@ share and redistributes forfeited stakes to honest participants
 in the same atomic transaction, with a trust-minimised, on-chain
 settlement layer that removes any post-submission reward manipulation
 by the aggregator.
-We make four contributions beyond our conference
-version~\cite{fairpoc_icbc2027}:
+% NOTE: the "beyond our conference version" framing and its citation
+% were removed on 2026-10-27. The conference paper has not been
+% submitted, so it cannot be cited as existing. Restore this framing
+% once ICBC accepts; this draft cannot be submitted before then.
+We make four contributions:
 (i)~a formal Nash equilibrium proof showing that honest
 participation is the dominant strategy for any rational client
 under stake-and-slash, including a coalition extension;
 (ii)~a formal Lemma characterising the self-amplifying failure mode
 of max-norm scoring under gradient inflation and proving that
 median-clip normalisation eliminates it;
+% TODO 2026-10-27: this claims four datasets, but the results tables
+% cover only CIFAR-10 and FashionMNIST, and the CIFAR-100 / SVHN data
+% on disk does not support a fairness advantage. Either add the tables
+% and revise the claim honestly, or narrow this to two datasets.
 (iii)~extended experiments on four datasets (CIFAR-10, FashionMNIST,
 CIFAR-100, SVHN) with 3 independent seeds and FLTrust, Multi-Krum,
 and TMC-Shapley as additional baselines;
@@ -205,19 +212,30 @@ This paper makes the following contributions:
         using a non-circular GT-Fairness metric.
 \end{enumerate}
 
-This paper substantially extends our conference
-version~\cite{fairpoc_icbc2027}.
-The new contributions are: the formal game-theoretic proof
-(Section~\ref{sec:gametheory}), the GradScale amplification lemma
-(Section~\ref{subsec:amplification}), the contract formal
-verification (Section~\ref{sec:contract_verification}), extended
-experiments on 2 additional datasets (CIFAR-100, SVHN) with
-3 independent seeds
-(Section~\ref{sec:experiments}), and the coalition attack analysis
-(Appendix~\ref{appendix:coalition}).
-All text has been substantially rewritten; shared experimental
-results are presented with multi-seed statistics not included
-in the conference version.
+% ==================================================================
+% EXTENSION STATEMENT, DISABLED 2026-10-27.
+% Two problems, both of which must be fixed before this is restored:
+%  (1) It cites a conference paper that does not exist yet.
+%  (2) It lists the CIFAR-100 and SVHN experiments as a contribution.
+%      Those runs completed after the tables were written and do NOT
+%      support the claim: FairPoC ties FedAvg on accuracy and loses on
+%      GT-Fairness in 7 of 8 cells. Listing them as an extension while
+%      the conclusion claims 6-of-8 superiority is worse than omitting
+%      them. Decide what to do with those results first.
+% ==================================================================
+%This paper substantially extends our conference
+%version~\cite{fairpoc_icbc2027}.
+%The new contributions are: the formal game-theoretic proof
+%(Section~\ref{sec:gametheory}), the GradScale amplification lemma
+%(Section~\ref{subsec:amplification}), the contract formal
+%verification (Section~\ref{sec:contract_verification}), extended
+%experiments on 2 additional datasets (CIFAR-100, SVHN) with
+%3 independent seeds
+%(Section~\ref{sec:experiments}), and the coalition attack analysis
+%(Appendix~\ref{appendix:coalition}).
+%All text has been substantially rewritten; shared experimental
+%results are presented with multi-seed statistics not included
+%in the conference version.
 
 %----------------------------------------------------------------------
 \section{Related Work}
