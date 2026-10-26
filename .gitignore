@@ -3,7 +3,12 @@ __pycache__/
 *.egg-info/
 .env
 data/cache/
-results/
+# results/: track the experiment CSVs (the evidence), ignore logs and
+# rendered plots (regenerable from the CSVs via evaluation/plot_*.py)
+results/*.log
+results/*.png
+results/*.pdf
+results/plots/
 *.log
 deployed_contracts.json
 *.zip

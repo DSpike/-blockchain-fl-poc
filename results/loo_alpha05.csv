@@ -1,0 +1,5 @@
+method,loo_spearman_rho,loo_spearman_p
+fedavg,0.0,1.0
+valscore,0.41818181818181815,0.22911284098281892
+cosinefilter,0.0,1.0
+ours,0.1702135522304181,0.6382593583672791
