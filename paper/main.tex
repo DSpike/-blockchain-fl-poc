@@ -72,7 +72,12 @@ updates communicated to a central aggregator. This paradigm is
 attractive for privacy-sensitive domains such as healthcare, finance,
 and IoT~\cite{nguyen2021federated}. However, FL introduces a fundamental
 economic problem: clients contribute heterogeneous amounts of value, yet
-standard aggregation schemes reward all participants uniformly. Under
+standard aggregation schemes reward all participants uniformly.
+Recent surveys place this first among the unresolved problems in FL,
+describing incentive design as a foundational requirement for FL to
+operate at scale and one that must jointly address client
+heterogeneity, contribution quality, and
+fairness~\cite{ziaeinejad2026context, zhu2023blockchain}. Under
 non-IID data distributions -- where clients hold skewed, non-representative
 class subsets -- uniform reward policy over-rewards low-contribution
 clients and under-rewards those with rare, high-value
@@ -228,6 +233,12 @@ unstable across aggregation rules. Figure~\ref{fig:stability} quantifies
 the same effect over training time: by round 30 of 50 the leave-one-out
 signal has collapsed to near zero for every client, while the normalised
 gradient norm remains discriminative throughout.
+
+This matters beyond reward accounting. Establishing theoretical
+guarantees for adaptive, context-aware client selection is named as an
+open direction in the FL literature~\cite{ziaeinejad2026context}, and any
+such guarantee must rest on a signal that still separates clients at the
+round in which the selection or payment is made.
 
 FairPoC's contribution is thus not the pairing of non-IID-aware scoring
 with on-chain enforcement, which TFFL already provides, but a contribution
