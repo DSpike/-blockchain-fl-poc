@@ -1,0 +1,8 @@
+contract,function,n,gas,eth_30gwei,usd_3k
+FairPoC,deploy,,1403789,0.042114,126.34
+FairPoC,stake,1,52656,0.001580,4.74
+FairPoC,submitAndSettle,10,357249,0.010717,32.15
+FairPoC,submitAndSettle,25,693550,0.020806,62.42
+FairPoC,submitAndSettle,50,1274483,0.038234,114.70
+FairPoC,submitAndSettle,100,2522270,0.075668,227.00
+FairPoC,submitAndSettle,200,5013672,0.150410,451.23

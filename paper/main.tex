@@ -65,8 +65,8 @@ GT-Fairness in 4 of 8, with consistent gains over all baselines across
 the three moderate non-IID regimes on CIFAR-10. Under adversarial evaluation, free-rider
 attacks incur a net loss of $1.67\times$ the staked amount and
 gradient-inflation is capped below equal share by median-clip
-normalisation. Settlement costs \$116.7 per round for 10 clients on
-Ethereum mainnet and about \$1.17 on an L2 rollup, requiring no custom
+normalisation. Settlement costs \$32.15 per round for 10 clients on
+Ethereum mainnet and about \$0.32 on an L2 rollup, requiring no custom
 consensus and deploying on any EVM-compatible chain.
 \end{abstract}
 
@@ -372,7 +372,7 @@ per-round token pool.
 
 \begin{remark}[Contract Integrity Property]
 \label{rem:integrity}
-The immutable \texttt{RewardDistributor} contract executes
+The immutable \texttt{FairPoC} contract executes
 $r_i = (s_i / S) \cdot R$ on-chain, guaranteeing exact proportionality
 to submitted scores: $r_i / s_i = R/S$ is identical for all $i$.
 This is a \emph{distribution faithfulness} guarantee: the on-chain
@@ -759,24 +759,28 @@ $\beta_p = 0.3$ therefore balances fairness, accuracy, and robustness.
   \label{fig:gas}
 \end{figure}
 
-Fig.~\ref{fig:gas} reports gas per call on Ganache.
-The batched \texttt{submitAndSettle(address[], uint256[])} accepts all $n$ scores
-in one transaction, giving:
+We deploy \texttt{FairPoC.sol} to a Ganache testnet and measure gas
+directly. The batched \texttt{submitAndSettle()} accepts all $n$ scores in
+one transaction. A least-squares fit over $n \in \{10, 25, 50, 100, 200\}$
+gives:
 \begin{equation}
-G(n) = 21{,}000 + 124{,}407\,n + 31{,}131,
+G(n) = 77{,}344 + 24{,}609\,n ,
 \label{eq:gas}
 \end{equation}
-where 21,000 is the EVM base cost, 124,407 the per-client marginal
-(calldata + SSTORE), and 31,131 the \texttt{distribute()} overhead
-(Fig.~\ref{fig:gas} shows $G(1){=}176{,}538$).
-Table~\ref{tab:gas} projects costs; at 30 Gwei, ETH = \$3{,}000,
-a 10-client round costs \$116.7 on Ethereum mainnet, or about
-\$1.17 on an L2 rollup.
+with $R^2 = 0.9998$, where $77{,}344$ is the fixed per-round overhead
+(EVM base cost, threshold computation and reward-pool accounting) and
+$24{,}609$ is the per-client marginal cost of classification, slashing
+and reward transfer. Deployment costs $1{,}403{,}789$ gas once, and
+\texttt{stake()} costs $52{,}656$ gas per client per round.
+Table~\ref{tab:gas} reports costs; at 30 Gwei, ETH = \$3{,}000,
+a 10-client round costs \$32.15 on Ethereum mainnet, or about
+\$0.32 on an L2 rollup.
 
 \begin{table}[t]
-\caption{Projected on-chain gas cost (\texttt{submitAndSettle()},
-Eq.~\ref{eq:gas}) vs.\ number of FL clients. Stake-and-slash adds
-${\approx}8{,}000n$ gas (not shown).}
+\caption{Measured on-chain gas cost of \texttt{FairPoC.sol}
+\texttt{submitAndSettle()} on a Ganache testnet vs.\ number of FL
+clients. $^\ast$projected from Eq.~\ref{eq:gas}. \texttt{stake()} adds
+$52{,}656$ gas per client per round.}
 \label{tab:gas}
 \centering
 \renewcommand{\arraystretch}{1.1}
@@ -784,10 +788,10 @@ ${\approx}8{,}000n$ gas (not shown).}
 \toprule
 \textbf{Clients} & \textbf{Total gas} & \textbf{ETH (30 Gwei)} & \textbf{USD (\$3k/ETH)} \\
 \midrule
-10  & 1{,}296{,}201  & 0.0389  & \$116.7 \\
-50  & 6{,}272{,}481  & 0.1882  & \$564.5 \\
-100 & 12{,}492{,}831 & 0.3748  & \$1{,}124.4 \\
-500 & 62{,}254{,}631 & 1.8676  & \$5{,}602.9 \\
+10  & 357{,}249     & 0.0107  & \$32.15 \\
+50  & 1{,}274{,}483  & 0.0382  & \$114.70 \\
+100 & 2{,}522{,}270  & 0.0757  & \$227.00 \\
+500$^\ast$ & 12{,}381{,}844 & 0.3715  & \$1{,}114.37 \\
 \midrule
 \multicolumn{4}{l}{\small L2 (Optimism): $\approx\!100\times$ cheaper than above} \\
 \bottomrule
