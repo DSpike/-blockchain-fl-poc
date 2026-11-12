@@ -34,6 +34,16 @@ D.~C. Nguyen, M.~Ding, P.~N. Pathirana, A.~Seneviratne, J.~Li, and H.~V. Poor,
   \emph{IEEE Communications Surveys \& Tutorials}, vol.~23, no.~3, pp.
   1622--1658, 2021.
 
+\bibitem{ziaeinejad2026context}
+S.~Ziaeinejad and S.~Samet, ``Federated learning with context-aware client
+  collaboration: Challenges, advances, and open problems,'' \emph{Information
+  Fusion}, vol. 136, p. 104446, 2026.
+
+\bibitem{zhu2023blockchain}
+J.~Zhu, J.~Cao, D.~Saxena, S.~Jiang, and H.~Ferradi, ``Blockchain-empowered
+  federated learning: Challenges, solutions, and future directions,'' \emph{ACM
+  Computing Surveys}, vol.~55, no.~11, pp. 1--31, 2023.
+
 \bibitem{zhan2021incentive}
 Y.~Zhan, J.~Zhang, Z.~Hong, L.~Wu, P.~Li, and S.~Guo, ``A survey of incentive
   mechanism design for federated learning,'' \emph{IEEE Transactions on
@@ -166,12 +176,14 @@ R.~Jain, D.-M. Chiu, and W.~Hawe, ``A quantitative measure of fairness and
   technical Report DEC-TR-301, Digital Equipment Corporation.
 
 \bibitem{ace2024attack}
-{\color{red}[AUTHORS TO BE FILLED]}, ``{ACE}: A model poisoning attack on
-  contribution evaluation methods in federated learning,'' \emph{arXiv preprint
-  arXiv:2405.20975}, 2024.
+Z.~Xu, F.~Jiang, L.~Niu, J.~Jia, B.~Li, and R.~Poovendran, ``{ACE}: A model
+  poisoning attack on contribution evaluation methods in federated learning,''
+  in \emph{33rd USENIX Security Symposium (USENIX Security 24)}.\hskip 1em plus
+  0.5em minus 0.4em\relax USENIX Association, 2024, pp. 4175--4192.
 
 \bibitem{fragility2025contrib}
-------, ``On the fragility of contribution score computation in federated
-  learning,'' \emph{arXiv preprint arXiv:2509.19921}, 2025.
+B.~Pej{\'o}, M.~Frank, K.~Varga, P.~Veliczky, and G.~Biczok, ``On the fragility
+  of contribution score computation in federated learning,'' \emph{arXiv
+  preprint arXiv:2509.19921}, 2025.
 
 \end{thebibliography}

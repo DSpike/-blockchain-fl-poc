@@ -25,15 +25,25 @@
 \title{FairPoC: Convergence-Stable Proof of Contribution for\\
 Auditable Federated Learning via ERC-20 Smart Contracts}
 
-% ICBC 2027 IS DOUBLE-BLIND. Identifying author block kept below as
-% comments; restore it for the camera-ready version.
-%\author{\IEEEauthorblockN{Derara Senay Shanka and Peter Shaojui Wang}
-%\IEEEauthorblockA{Department of Computer Science and Information Engineering\\
-%National Taiwan University of Science and Technology, Taipei 106, Taiwan\\
-%E-mail: derjan06@gmail.com; shaojuiwang@mail.ntust.edu.tw\\
-%Corresponding author: Peter Shaojui Wang}}
-\author{\IEEEauthorblockN{Anonymous Submission}
-\IEEEauthorblockA{Paper ID: \textit{(assigned at submission)}}}
+% ====================================================================
+% AUTHOR SWITCH. One file, no duplicate copies.
+%   \anontrue   -> "Anonymous Submission"   USE THIS TO SUBMIT
+%   \anonfalse  -> real names               for your own review only
+% ICBC 2027 is double-blind with a rebuttal period: the uploaded PDF
+% must be anonymous. Set this back to \anontrue before you submit.
+% ====================================================================
+\newif\ifanon
+\anonfalse
+\ifanon
+  \author{\IEEEauthorblockN{Anonymous Submission}
+  \IEEEauthorblockA{Paper ID: \textit{(assigned at submission)}}}
+\else
+  \author{\IEEEauthorblockN{Derara Senay Shanka and Peter Shaojui Wang}
+  \IEEEauthorblockA{Department of Computer Science and Information Engineering\\
+  National Taiwan University of Science and Technology, Taipei 106, Taiwan\\
+  E-mail: derjan06@gmail.com; shaojuiwang@mail.ntust.edu.tw\\
+  Corresponding author: Peter Shaojui Wang}}
+\fi
 
 \maketitle
 
@@ -49,7 +59,8 @@ stake-and-slash enforcement: clients whose Proof-of-Contribution score
 falls below 30\% of equal share are automatically slashed and
 blacklisted, with no trusted intermediary required for settlement.
 Across four non-IID regimes on CIFAR-10 and FashionMNIST, FairPoC
-achieves the highest accuracy in all 8 configurations and the highest
+achieves the highest or tied-highest accuracy in 7 of 8 configurations
+and the highest
 GT-Fairness in 4 of 8, with consistent gains over all baselines across
 the three moderate non-IID regimes on CIFAR-10. Under adversarial evaluation, free-rider
 attacks incur a net loss of $1.67\times$ the staked amount and
@@ -743,7 +754,8 @@ Normalised gradient norm replaces Shapley/LOO signals that collapse at
 convergence; stake-and-slash provides empirically demonstrated economic deterrence for
 rational attackers, extending the enforcement principle of FLock to the
 contribution-fairness setting. Evaluation on CIFAR-10 and FashionMNIST
-confirms FairPoC achieves the highest accuracy in all 8 configurations
+confirms FairPoC achieves the highest or tied-highest accuracy in 7 of
+8 configurations
 and the highest GT-Fairness in 4 of 8, with consistent fairness gains
 across moderate non-IID regimes on CIFAR-10, deployable on any
 EVM-compatible chain without custom consensus.
