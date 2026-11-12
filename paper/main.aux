@@ -15,6 +15,7 @@
 \providecommand \oddpage@label [2]{}
 \@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{1}{}\protected@file@percent }
 \citation{he2026blockflmd2c}
+\citation{nguyen2026carpediem}
 \citation{rashid2025tffl,dong2022flock}
 \citation{shapley1953value,song2019profit,wang2020measure}
 \citation{gradient_driven_fairness2021}
@@ -77,6 +78,7 @@
 \citation{poshapley2023}
 \citation{poshapley2023}
 \citation{ace2024attack,fragility2025contrib}
+\citation{nguyen2026carpediem}
 \@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces FashionMNIST: Final Accuracy (\%) / GT-Fairness (3-seed mean). Bold = best per column. $\dagger $: FairPoC falls below FedAVG at extreme non-IID (see text).}}{5}{}\protected@file@percent }
 \newlabel{tab:fashionmnist}{{II}{5}{}{table.2}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Gradient norm diversity (left) vs.\ LOO (right) over 50 rounds at $\alpha _D=0.1$. Gradient norm remains stable and client-differentiated throughout; LOO collapses toward zero after round 30, consistent with the limitation acknowledged by PoShapley-BCFL~\cite  {poshapley2023}.}}{5}{}\protected@file@percent }
@@ -86,8 +88,19 @@
 \newlabel{subsec:adversarial}{{\mbox  {VI-D}}{5}{}{subsection.6.4}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces Adversarial robustness ($\alpha _D{=}0.1$, CIFAR-10, 1 attacker / 10 clients). Over-reward $=$ attacker reward share $\div $ $1/n$. Net-gain ${<}1.0{\times }$: economically irrational to attack. Bold = best per attack. FairPoC-MC uses median-clip.}}{5}{}\protected@file@percent }
 \newlabel{tab:adversarial}{{III}{5}{}{table.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-E}}Sensitivity to $\beta $}{5}{}\protected@file@percent }
-\newlabel{subsec:ablation_beta}{{\mbox  {VI-E}}{5}{}{subsection.6.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-E}}Beyond FairPoC: Manipulating a Published CLP Detector}{5}{}\protected@file@percent }
+\newlabel{subsec:clp}{{\mbox  {VI-E}}{5}{}{subsection.6.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces Manipulating the R3T critical-period detector (CIFAR-10, $\alpha _D{=}0.1$, 40 rounds, 1 attacker / 10 clients, $\tau {=}0.01$). Drain is bonus budget relative to the attack-free arm.}}{6}{}\protected@file@percent }
+\newlabel{tab:clp}{{IV}{6}{}{table.4}{}}
+\newlabel{eq:fgn}{{4}{6}{}{equation.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Accuracy and GT-Fairness as $\beta _p$ (gradient norm weight) varies from 0 (accuracy-only) to 1 (gradient-norm-only) on CIFAR-10. Dashed line: paper default $\beta _p=0.3$.}}{6}{}\protected@file@percent }
+\newlabel{fig:ablation_beta}{{3}{6}{}{figure.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Gas cost per smart contract call (Ganache testnet, single-client batch). \texttt  {submitAndSettle([1 client])}: 145,407 gas (base scoring + reward); stake-and-slash adds ${\approx }8{,}000$ gas per client for the threshold check and slash accounting.}}{6}{}\protected@file@percent }
+\newlabel{fig:gas}{{4}{6}{}{figure.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-F}}Sensitivity to $\beta $}{6}{}\protected@file@percent }
+\newlabel{subsec:ablation_beta}{{\mbox  {VI-F}}{6}{}{subsection.6.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-G}}Blockchain Overhead}{6}{}\protected@file@percent }
+\newlabel{eq:gas}{{5}{6}{}{equation.5}{}}
 \bibstyle{IEEEtran}
 \bibdata{refs}
 \bibcite{mcmahan2017communication}{1}
@@ -96,18 +109,6 @@
 \bibcite{zhu2023blockchain}{4}
 \bibcite{zhan2021incentive}{5}
 \bibcite{zhao2018federated}{6}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Accuracy and GT-Fairness as $\beta _p$ (gradient norm weight) varies from 0 (accuracy-only) to 1 (gradient-norm-only) on CIFAR-10. Dashed line: paper default $\beta _p=0.3$.}}{6}{}\protected@file@percent }
-\newlabel{fig:ablation_beta}{{3}{6}{}{figure.3}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Gas cost per smart contract call (Ganache testnet, single-client batch). \texttt  {submitAndSettle([1 client])}: 145,407 gas (base scoring + reward); stake-and-slash adds ${\approx }8{,}000$ gas per client for the threshold check and slash accounting.}}{6}{}\protected@file@percent }
-\newlabel{fig:gas}{{4}{6}{}{figure.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-F}}Blockchain Overhead}{6}{}\protected@file@percent }
-\newlabel{eq:gas}{{4}{6}{}{equation.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {VII}Limitations}{6}{}\protected@file@percent }
-\newlabel{sec:limitations}{{VII}{6}{}{section.7}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces Projected on-chain gas cost (\texttt  {submitAndSettle()}, Eq.~\ref {eq:gas}) vs.\ number of FL clients. Stake-and-slash adds ${\approx }8{,}000n$ gas (not shown).}}{6}{}\protected@file@percent }
-\newlabel{tab:gas}{{IV}{6}{}{table.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {VIII}Conclusion}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{References}{6}{}\protected@file@percent }
 \bibcite{song2019profit}{7}
 \bibcite{wang2020measure}{8}
 \bibcite{gradient_driven_fairness2021}{9}
@@ -116,21 +117,28 @@
 \bibcite{bladefl2022}{12}
 \bibcite{poshapley2023}{13}
 \bibcite{he2026blockflmd2c}{14}
-\bibcite{rashid2025tffl}{15}
-\bibcite{dong2022flock}{16}
-\bibcite{shapley1953value}{17}
-\bibcite{kim2019blockchained}{18}
-\bibcite{pocl2024}{19}
-\bibcite{dong2024flock}{20}
-\bibcite{huang2024bcontrib}{21}
-\bibcite{rashid2026tafl}{22}
-\bibcite{gtgshapley2022}{23}
-\bibcite{geimer2025volatility}{24}
-\bibcite{erc20}{25}
-\bibcite{krizhevsky2009learning}{26}
-\bibcite{xiao2017fashion}{27}
-\bibcite{ghorbani2019data}{28}
-\bibcite{jain1984quantitative}{29}
-\bibcite{ace2024attack}{30}
-\bibcite{fragility2025contrib}{31}
-\gdef \@abspage@last{7}
+\bibcite{nguyen2026carpediem}{15}
+\bibcite{rashid2025tffl}{16}
+\bibcite{dong2022flock}{17}
+\bibcite{shapley1953value}{18}
+\bibcite{kim2019blockchained}{19}
+\bibcite{pocl2024}{20}
+\bibcite{dong2024flock}{21}
+\bibcite{huang2024bcontrib}{22}
+\bibcite{rashid2026tafl}{23}
+\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces Projected on-chain gas cost (\texttt  {submitAndSettle()}, Eq.~\ref {eq:gas}) vs.\ number of FL clients. Stake-and-slash adds ${\approx }8{,}000n$ gas (not shown).}}{7}{}\protected@file@percent }
+\newlabel{tab:gas}{{V}{7}{}{table.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Limitations}{7}{}\protected@file@percent }
+\newlabel{sec:limitations}{{VII}{7}{}{section.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VIII}Conclusion}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{References}{7}{}\protected@file@percent }
+\bibcite{gtgshapley2022}{24}
+\bibcite{geimer2025volatility}{25}
+\bibcite{erc20}{26}
+\bibcite{krizhevsky2009learning}{27}
+\bibcite{xiao2017fashion}{28}
+\bibcite{ghorbani2019data}{29}
+\bibcite{jain1984quantitative}{30}
+\bibcite{ace2024attack}{31}
+\bibcite{fragility2025contrib}{32}
+\gdef \@abspage@last{8}

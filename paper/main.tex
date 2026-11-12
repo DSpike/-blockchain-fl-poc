@@ -148,8 +148,10 @@ We address these gaps with \textbf{FairPoC}:
   \item \textbf{Gradient-magnitude scoring is a manipulable primitive,
         and median-clip normalisation corrects it.} We characterise the
         self-amplifying failure mode of max-norm scoring under gradient
-        inflation and show that median-clip removes the attacker's
-        advantage, driving net gain below $1\times$.
+        inflation, demonstrate the same failure in a published
+        critical-period detector~\cite{nguyen2026carpediem} that gates
+        bonus payment on gradient norms, and show that median-clip
+        bounds both.
   \item \textbf{Practical on-chain enforcement.} Stake-and-slash
         through standard ERC-20 interfaces, requiring no custom
         consensus, with measured gas costs. We claim deployment
@@ -641,13 +643,86 @@ because at $\alpha_D = 0.1$ honest clients also score low on the shared
 validation set, a known limitation of accuracy-based scoring under
 severe data skew.
 
-% ==================================================================
-% PENDING VERIFICATION: generalisation of the GradScale failure mode
-% to CLP-aware bonus schedules whose detector is built from weighted
-% squared gradient norms (Carpe Diem / R3T, cite nguyen2026carpediem).
-% Add the attack and budget-drain table here once the experiment has
-% been run. Do NOT write this claim until it reproduces.
-% ==================================================================
+\subsection{Beyond FairPoC: Manipulating a Published CLP Detector}
+\label{subsec:clp}
+
+The GradScale failure mode is not specific to FairPoC. Any mechanism that
+aggregates gradient magnitudes inherits it, including schedules that gate
+payment on a detector built from those magnitudes. We demonstrate this on
+R3T~\cite{nguyen2026carpediem}, a contract-theoretic incentive framework
+that pays a bonus multiplier $h(t) = 1 + \vartheta/\ln(2t)$ during
+\emph{critical learning periods} and $h(t)=1$ otherwise. R3T identifies
+those periods from a federated gradient norm,
+\begin{equation}
+\mathrm{FGN}(t) = -\eta \sum_{n \in S(t)} \omega_n
+\left\lVert g_{B,n} \right\rVert_2^2 ,
+\qquad \omega_n = e_n / \textstyle\sum_m e_m ,
+\label{eq:fgn}
+\end{equation}
+classifying round $t$ as critical when the \emph{relative} change
+$(\mathrm{FGN}(t)-\mathrm{FGN}(t{-}1))/\mathrm{FGN}(t{-}1) \geq \tau$.
+Because the test is on the relative change, a client that raises its own
+term each round can hold the window open past the true critical phase.
+R3T assumes clients report truthfully and lists adversarial behaviour in
+critical periods as future work.
+
+We implement Eq.~\ref{eq:fgn} with $\tau = 0.01$ and run five arms on
+CIFAR-10 at $\alpha_D = 0.1$ over 40 rounds, one attacker in ten clients.
+\emph{Fixed} scales by a constant, \emph{ramp} by a geometrically growing
+factor, and \emph{adaptive} solves each round for the \emph{minimum} scale
+that keeps the round classified critical, so the reported inflation is the
+attack's true cost rather than a tuned value. Results are in
+Table~\ref{tab:clp}.
+
+\begin{table}[t]
+\caption{Manipulating the R3T critical-period detector (CIFAR-10,
+$\alpha_D{=}0.1$, 40 rounds, 1 attacker / 10 clients, $\tau{=}0.01$).
+Drain is bonus budget relative to the attack-free arm.}
+\label{tab:clp}
+\centering
+\renewcommand{\arraystretch}{1.1}
+\setlength{\tabcolsep}{4pt}
+\footnotesize
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Arm} & \textbf{CLP rnds} & \textbf{Drain} & \textbf{Peak scale}
+& \textbf{Acc (\%)} \\
+\midrule
+No attacker            & 2  & 1.000$\times$ & 1.0  & \textbf{69.30} \\
+Fixed scale            & 1  & 0.995$\times$ & 2.0  & 73.70 \\
+Ramped scale           & 32 & 1.208$\times$ & 115  & 9.65  \\
+\textbf{Adaptive}      & \textbf{26} & \textbf{1.182}$\times$
+                       & \textbf{9.3} & 54.25 \\
+Adaptive + median-clip & 9  & 1.042$\times$ & 1.0  & 70.15 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Three observations follow. First, the \emph{fixed} arm is a control and
+behaves as predicted: a constant inflation shifts FGN once and produces
+\emph{fewer} critical rounds than the attack-free arm, confirming that the
+effect comes from ramping rather than from inflation as such. Second, the
+adaptive attacker extends the window from 2 rounds to 26 and inflates the
+bonus budget by $18.2\%$ at a peak inflation of only $9.3\times$. Third,
+median-clip normalisation, the same correction that bounds GradScale in
+Section~\ref{subsec:adversarial}, cuts the window to 9 rounds and the
+drain to $4.2\%$, and restores accuracy.
+
+Separately, the detector is marginal even with no adversary present. In
+the attack-free arm the round-to-round relative change of FGN ranges from
+$-0.0175$ to $+0.0117$ after round 10, so it straddles $\tau = 0.01$ in
+both directions and triggers a false critical round at round 40. The
+threshold sits inside the signal's own noise band.
+
+Four limitations bound these results. The attack is not stealthy: it costs
+15.0 points of final accuracy, which an operator would notice. The
+attacker gains no \emph{share} advantage, since its bonus weight is fixed
+by data volume; it inflates the pool for everyone, so this is budget drain
+against the operator rather than theft from peers. We do not model R3T's
+budget feasibility constraint, under which the real effect would be early
+budget exhaustion or diluted per-client rewards rather than overspend.
+Finally, these are single-seed results at one heterogeneity level, and the
+noise-floor observation in particular warrants replication.
 
 \subsection{Sensitivity to $\beta$}
 \label{subsec:ablation_beta}
