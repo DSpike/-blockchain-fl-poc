@@ -65,8 +65,9 @@ GT-Fairness in 4 of 8, with consistent gains over all baselines across
 the three moderate non-IID regimes on CIFAR-10. Under adversarial evaluation, free-rider
 attacks incur a net loss of $1.67\times$ the staked amount and
 gradient-inflation is capped below equal share by median-clip
-normalisation. Settlement costs under \$0.12 per round for 10 clients
-and requires no custom consensus, deploying on any EVM-compatible chain.
+normalisation. Settlement costs \$116.7 per round for 10 clients on
+Ethereum mainnet and about \$1.17 on an L2 rollup, requiring no custom
+consensus and deploying on any EVM-compatible chain.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -769,7 +770,8 @@ where 21,000 is the EVM base cost, 124,407 the per-client marginal
 (calldata + SSTORE), and 31,131 the \texttt{distribute()} overhead
 (Fig.~\ref{fig:gas} shows $G(1){=}176{,}538$).
 Table~\ref{tab:gas} projects costs; at 30 Gwei, ETH = \$3{,}000,
-a 10-client round costs under \$0.12 (100$\times$ less on an L2).
+a 10-client round costs \$116.7 on Ethereum mainnet, or about
+\$1.17 on an L2 rollup.
 
 \begin{table}[t]
 \caption{Projected on-chain gas cost (\texttt{submitAndSettle()},
@@ -803,7 +805,7 @@ scoring is left to future work. The $n{=}10$ client setting is
 representative of private enterprise FL; Table~\ref{tab:gas} projects
 $O(n)$ cost to 500 clients, but accuracy at larger $n$ is not studied.
 
-At $\alpha_D = 0.1$ on FashionMNIST, FairPoC's GT-Fairness (0.563)
+At $\alpha_D = 0.1$ on FashionMNIST, FairPoC's GT-Fairness (0.595)
 falls below FedAVG (0.649). Under near-single-class concentration,
 gradient norms reflect the dominant class's magnitude rather than data
 volume (Proposition~\ref{prop:gradnorm_limit}), so scores misalign with
