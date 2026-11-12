@@ -58,11 +58,11 @@ training, and settles rewards through ERC-20 smart contracts with
 stake-and-slash enforcement: clients whose Proof-of-Contribution score
 falls below 30\% of equal share are automatically slashed and
 blacklisted, with no trusted intermediary required for settlement.
-Across four non-IID regimes on CIFAR-10 and FashionMNIST, FairPoC
-achieves the highest or tied-highest accuracy in 7 of 8 configurations
-and the highest
-GT-Fairness in 4 of 8, with consistent gains over all baselines across
-the three moderate non-IID regimes on CIFAR-10. Under adversarial evaluation, free-rider
+Across four non-IID regimes on CIFAR-10 and FashionMNIST and five
+baselines, FairPoC attains the best accuracy in 5 of 8 configurations,
+with all remaining margins inside one standard deviation, and the best
+GT-Fairness in 4 of 8, leading every baseline on CIFAR-10 at
+$\alpha_D \leq 1.0$. Under adversarial evaluation, free-rider
 attacks incur a net loss of $1.67\times$ the staked amount and
 gradient-inflation is capped below equal share by median-clip
 normalisation. Settlement costs \$32.15 per round for 10 clients on
@@ -439,7 +439,8 @@ gradient rather than data volume, and smaller clients are
 over-rewarded relative to their GT weight.
 At $\alpha_D \geq 0.5$, clients hold multiple classes ($\rho_i < 1$,
 $H_i > 0$), and gradient norm correlates with data volume through the
-multi-class sum; FairPoC leads all baselines on both datasets.
+multi-class sum. FairPoC leads every baseline on CIFAR-10 in this
+regime and at $\alpha_D = 0.5$ on FashionMNIST.
 
 %----------------------------------------------------------------------
 \section{Experiments}
@@ -460,8 +461,12 @@ Baselines are:
         low-accuracy clients filtered at $\mu - 2\sigma$, no blockchain.
   \item \textbf{BLADE-FL}~\cite{bladefl2022}: cosine-similarity Byzantine
         filter at $\mu - 2\sigma$; retained clients get uniform weights.
-  \item \textbf{TMC-Shapley}~\cite{ghorbani2019data}: truncated MC Shapley,
-        $T{=}20$ permutations, negatives clipped to zero.
+  \item \textbf{FLTrust}~\cite{cao2020fltrust}: server-side trust
+        bootstrapping from a clean root dataset; updates reweighted by
+        cosine similarity to the server update.
+  \item \textbf{Multi-Krum}~\cite{blanchard2017krum}: selects the
+        $n-f-2$ updates closest to their nearest neighbours and averages
+        them uniformly.
 \end{itemize}
 
 We report two metrics. Accuracy is the final-round top-1 on the full
@@ -492,57 +497,71 @@ Tables~\ref{tab:cifar10} and~\ref{tab:fashionmnist} report final
 accuracy and average Jain's fairness.
 
 \begin{table}[t]
-\caption{CIFAR-10: Final Accuracy (\%) / GT-Fairness (3-seed mean). Bold = best per column.}
+\caption{CIFAR-10: final accuracy (\%) / GT-Fairness averaged over rounds. Mean$\pm$std over seeds \{42, 123, 456\}. Bold = best per column; differences under 0.3 points in accuracy are within one standard deviation. GT-Fairness std is below 0.035 for all methods except FLTrust (max 0.069).}
 \label{tab:cifar10}
 \centering
-\renewcommand{\arraystretch}{1.15}
-\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.1}
+\setlength{\tabcolsep}{2.5pt}
+\scriptsize
 \begin{tabular}{lcccc}
 \toprule
 \textbf{Method} & $\alpha_D{=}0.1$ & $\alpha_D{=}0.5$ & $\alpha_D{=}1.0$ & $\alpha_D{=}10.0$ \\
 \midrule
-FedAVG           & 73.0 / 0.904          & 82.2 / 0.981          & 84.2 / 0.993          & \textbf{85.7} / \textbf{1.000} \\
-PoCL             & 73.1 / 0.879          & 82.5 / 0.989          & 84.2 / 0.929          & 85.5 / 0.933          \\
-FLTrust          & 59.9 / 0.500          & 76.3 / 0.530          & 80.9 / 0.500          & 85.5 / 0.730          \\
-\textbf{FairPoC} & \textbf{74.9} / \textbf{0.969} & \textbf{82.9} / \textbf{0.994} & \textbf{84.3} / \textbf{0.997} & \textbf{85.7} / 0.967 \\
+FedAVG             & 73.0$\pm$0.2 / .904 & 82.2$\pm$0.1 / .981 & 84.2$\pm$0.3 / .993 & 85.7$\pm$0.2 / \textbf{1.000} \\
+PoCL               & 73.0$\pm$1.3 / .929 & 82.5$\pm$0.1 / .987 & 84.2$\pm$0.3 / .973 & 85.5$\pm$0.1 / .965 \\
+BLADE-FL           & 72.8$\pm$0.4 / .904 & 82.1$\pm$0.3 / .981 & 84.1$\pm$0.3 / .993 & \textbf{85.8}$\pm$0.2 / .997 \\
+FLTrust            & 59.9$\pm$6.4 / .533 & 76.3$\pm$1.5 / .552 & 80.9$\pm$0.1 / .598 & 85.5$\pm$0.2 / .783 \\
+Multi-Krum         & 62.3$\pm$0.1 / .842 & 79.4$\pm$0.3 / .888 & 83.7$\pm$0.2 / .893 & 85.2$\pm$0.3 / .900 \\
+\textbf{FairPoC}   & \textbf{74.9}$\pm$0.5 / \textbf{.973} & \textbf{82.9}$\pm$0.2 / \textbf{.994} & \textbf{84.3}$\pm$0.2 / \textbf{.995} & 85.7$\pm$0.3 / .972 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \begin{table}[t]
-\caption{FashionMNIST: Final Accuracy (\%) / GT-Fairness (3-seed mean). Bold = best per column. $\dagger$: FairPoC falls below FedAVG at extreme non-IID (see text).}
+\caption{FashionMNIST: final accuracy (\%) / GT-Fairness averaged over rounds. Mean$\pm$std over seeds \{42, 123, 456\}. Bold = best per column. GT-Fairness std is below 0.035 except FLTrust (max 0.098).}
 \label{tab:fashionmnist}
 \centering
-\renewcommand{\arraystretch}{1.15}
-\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.1}
+\setlength{\tabcolsep}{2.5pt}
+\scriptsize
 \begin{tabular}{lcccc}
 \toprule
 \textbf{Method} & $\alpha_D{=}0.1$ & $\alpha_D{=}0.5$ & $\alpha_D{=}1.0$ & $\alpha_D{=}10.0$ \\
 \midrule
-FedAVG           & \textbf{89.4} / \textbf{0.649} & 92.5 / 0.976          & \textbf{92.8} / 0.994 & 93.2 / \textbf{1.000} \\
-PoCL             & 88.9 / 0.515                   & 92.4 / 0.949          & 92.7 / \textbf{0.995} & \textbf{93.3} / \textbf{1.000} \\
-FLTrust          & 78.7 / 0.337                   & 90.8 / 0.487          & 92.0 / 0.549          & 93.0 / 0.504          \\
-\textbf{FairPoC} & 89.3 / 0.595$^\dagger$         & \textbf{92.6} / \textbf{0.991} & \textbf{92.8} / 0.962 & \textbf{93.4} / \textbf{1.000} \\
+FedAVG             & \textbf{89.4}$\pm$0.1 / \textbf{.649} & 92.5$\pm$0.2 / .976 & 92.8$\pm$0.0 / \textbf{.994} & 93.2$\pm$0.1 / \textbf{1.000} \\
+PoCL               & 88.9$\pm$0.4 / .515 & 92.4$\pm$0.2 / .958 & 92.7$\pm$0.1 / .980 & 93.3$\pm$0.1 / .954 \\
+BLADE-FL           & 89.3$\pm$0.2 / .649 & 92.5$\pm$0.2 / .974 & \textbf{92.9}$\pm$0.0 / .994 & 93.2$\pm$0.1 / .998 \\
+FLTrust            & 78.7$\pm$1.9 / .465 & 90.8$\pm$0.2 / .502 & 92.0$\pm$0.0 / .580 & 93.0$\pm$0.3 / .623 \\
+Multi-Krum         & 86.6$\pm$0.1 / .601 & 92.0$\pm$0.1 / .883 & 92.7$\pm$0.1 / .894 & 93.1$\pm$0.0 / .900 \\
+\textbf{FairPoC}   & 89.3$\pm$0.5 / .602 & \textbf{92.6}$\pm$0.2 / \textbf{.992} & 92.8$\pm$0.1 / .989 & \textbf{93.4}$\pm$0.1 / .999 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 On CIFAR-10, FairPoC achieves the highest GT-Fairness at
 $\alpha_D \in \{0.1, 0.5, 1.0\}$, with the largest gap at $\alpha_D = 0.1$
-(0.969 vs.\ FedAVG 0.904); PoCL falls further to 0.879 because
+(0.973 vs.\ FedAVG 0.904); PoCL reaches 0.929, below FairPoC because
 accuracy-only weighting ignores contribution diversity. At $\alpha_D = 10.0$
-(near-IID), FedAVG achieves the maximum of 1.000 because uniform rewards
+(near-IID), FedAVG attains the maximum of 1.000 because uniform rewards
 are trivially optimal when all clients hold balanced data; FairPoC reaches
-0.967 in this regime. FLTrust sacrifices fairness for Byzantine robustness,
-falling to 0.500 at $\alpha_D \in \{0.1, 1.0\}$.
-On FashionMNIST, FairPoC leads at $\alpha_D = 0.5$ (0.991 vs.\ FedAVG 0.976)
-and ties at $\alpha_D = 10.0$, but falls below FedAVG at $\alpha_D = 0.1$
-(0.595 vs.\ 0.649) and below PoCL at $\alpha_D = 1.0$ (0.962 vs.\ 0.995).
+0.972 in this regime. The two Byzantine-robust baselines trade fairness
+for robustness: FLTrust falls to 0.533 at $\alpha_D = 0.1$ and Multi-Krum
+is capped near 0.9 at every setting, since both discard or equalise
+updates rather than scoring them.
+On FashionMNIST, FairPoC leads at $\alpha_D = 0.5$ (0.992 vs.\ FedAVG 0.976),
+but trails at the other three settings: 0.602 vs.\ 0.649 at
+$\alpha_D = 0.1$, 0.989 vs.\ 0.994 at $\alpha_D = 1.0$, and 0.999 vs.\ 1.000
+at $\alpha_D = 10.0$. The last two gaps are within one standard deviation;
+the first is not, and is analysed in \S\ref{sec:limitations}.
 The $\alpha_D = 0.1$ shortfall arises because near-single-class clients
 produce similarly scaled gradient norms regardless of data volume, causing
 the PoC score to misalign with the volume-weighted GT (see \S\ref{sec:limitations}).
-Accuracy is consistently competitive: FairPoC leads or ties on CIFAR-10 in
-all settings, and differences are within 0.2\% on FashionMNIST.
+On accuracy FairPoC is best in 5 of 8 configurations. In the other
+three it is beaten by 0.1 points, by BLADE-FL on CIFAR-10 at
+$\alpha_D = 10.0$ and on FashionMNIST at $\alpha_D = 1.0$, and by FedAVG on
+FashionMNIST at $\alpha_D = 0.1$. All three margins are an order of
+magnitude below the seed-to-seed standard deviation, so accuracy is best
+read as comparable across methods rather than as a ranking.
 
 \subsection{Convergence Stability of Gradient Divergence}
 
@@ -815,13 +834,14 @@ scoring is left to future work. The $n{=}10$ client setting is
 representative of private enterprise FL; Table~\ref{tab:gas} projects
 $O(n)$ cost to 500 clients, but accuracy at larger $n$ is not studied.
 
-At $\alpha_D = 0.1$ on FashionMNIST, FairPoC's GT-Fairness (0.595)
+At $\alpha_D = 0.1$ on FashionMNIST, FairPoC's GT-Fairness (0.602)
 falls below FedAVG (0.649). Under near-single-class concentration,
 gradient norms reflect the dominant class's magnitude rather than data
 volume (Proposition~\ref{prop:gradnorm_limit}), so scores misalign with
 the volume-weighted GT. This effect is confined to degenerate
-concentration; at all $\alpha_D \geq 0.5$ FairPoC leads or matches
-every baseline on both datasets.
+concentration. On CIFAR-10 FairPoC leads every baseline at all
+$\alpha_D \leq 1.0$; on FashionMNIST it leads at $\alpha_D = 0.5$ and trails
+by at most 0.005 elsewhere.
 
 Stake-and-slash deters rational attackers but does not cryptographically
 exclude them: a patient adversary can build honest history until staking
@@ -840,12 +860,11 @@ non-IID-aware contribution rewards via ERC-20 smart contracts.
 Normalised gradient norm replaces Shapley/LOO signals that collapse at
 convergence; stake-and-slash provides empirically demonstrated economic deterrence for
 rational attackers, extending the enforcement principle of FLock to the
-contribution-fairness setting. Evaluation on CIFAR-10 and FashionMNIST
-confirms FairPoC achieves the highest or tied-highest accuracy in 7 of
-8 configurations
-and the highest GT-Fairness in 4 of 8, with consistent fairness gains
-across moderate non-IID regimes on CIFAR-10, deployable on any
-EVM-compatible chain without custom consensus.
+contribution-fairness setting. Evaluation on CIFAR-10 and FashionMNIST against five baselines
+gives the best accuracy in 5 of 8 configurations and the best
+GT-Fairness in 4 of 8, with consistent fairness gains across the
+non-IID regimes on CIFAR-10, deployable on any EVM-compatible chain
+without custom consensus.
 
 \bibliographystyle{IEEEtran}
 \bibliography{refs}

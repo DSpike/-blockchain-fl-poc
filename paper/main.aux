@@ -58,7 +58,8 @@
 \citation{mcmahan2017communication}
 \citation{pocl2024}
 \citation{bladefl2022}
-\citation{ghorbani2019data}
+\citation{cao2020fltrust}
+\citation{blanchard2017krum}
 \citation{jain1984quantitative}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}Gradient Norm Stability}{4}{}\protected@file@percent }
 \newlabel{rem:stability}{{2}{4}{}{remark.2}{}}
@@ -70,7 +71,7 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-A}}Setup}{4}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Class distribution across 10 clients at $\alpha _D=0.1$. Rows are clients; columns are classes.}}{4}{}\protected@file@percent }
 \newlabel{fig:data_dist}{{1}{4}{}{figure.1}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces CIFAR-10: Final Accuracy (\%) / GT-Fairness (3-seed mean). Bold = best per column.}}{4}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces CIFAR-10: final accuracy (\%) / GT-Fairness averaged over rounds. Mean$\pm $std over seeds \{42, 123, 456\}. Bold = best per column; differences under 0.3 points in accuracy are within one standard deviation. GT-Fairness std is below 0.035 for all methods except FLTrust (max 0.069).}}{4}{}\protected@file@percent }
 \newlabel{tab:cifar10}{{I}{4}{}{table.1}{}}
 \newlabel{eq:gt}{{3}{4}{}{equation.3}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Main Results}{4}{}\protected@file@percent }
@@ -78,8 +79,7 @@
 \citation{poshapley2023}
 \citation{poshapley2023}
 \citation{ace2024attack,fragility2025contrib}
-\citation{nguyen2026carpediem}
-\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces FashionMNIST: Final Accuracy (\%) / GT-Fairness (3-seed mean). Bold = best per column. $\dagger $: FairPoC falls below FedAVG at extreme non-IID (see text).}}{5}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces FashionMNIST: final accuracy (\%) / GT-Fairness averaged over rounds. Mean$\pm $std over seeds \{42, 123, 456\}. Bold = best per column. GT-Fairness std is below 0.035 except FLTrust (max 0.098).}}{5}{}\protected@file@percent }
 \newlabel{tab:fashionmnist}{{II}{5}{}{table.2}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Gradient norm diversity (left) vs.\ LOO (right) over 50 rounds at $\alpha _D=0.1$. Gradient norm remains stable and client-differentiated throughout; LOO collapses toward zero after round 30, consistent with the limitation acknowledged by PoShapley-BCFL~\cite  {poshapley2023}.}}{5}{}\protected@file@percent }
 \newlabel{fig:stability}{{2}{5}{}{figure.2}{}}
@@ -88,15 +88,14 @@
 \newlabel{subsec:adversarial}{{\mbox  {VI-D}}{5}{}{subsection.6.4}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces Adversarial robustness ($\alpha _D{=}0.1$, CIFAR-10, 1 attacker / 10 clients). Over-reward $=$ attacker reward share $\div $ $1/n$. Net-gain ${<}1.0{\times }$: economically irrational to attack. Bold = best per attack. FairPoC-MC uses median-clip.}}{5}{}\protected@file@percent }
 \newlabel{tab:adversarial}{{III}{5}{}{table.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-E}}Beyond FairPoC: Manipulating a Published CLP Detector}{5}{}\protected@file@percent }
-\newlabel{subsec:clp}{{\mbox  {VI-E}}{5}{}{subsection.6.5}{}}
+\citation{nguyen2026carpediem}
 \@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces Manipulating the R3T critical-period detector (CIFAR-10, $\alpha _D{=}0.1$, 40 rounds, 1 attacker / 10 clients, $\tau {=}0.01$). Drain is bonus budget relative to the attack-free arm.}}{6}{}\protected@file@percent }
 \newlabel{tab:clp}{{IV}{6}{}{table.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-E}}Beyond FairPoC: Manipulating a Published CLP Detector}{6}{}\protected@file@percent }
+\newlabel{subsec:clp}{{\mbox  {VI-E}}{6}{}{subsection.6.5}{}}
 \newlabel{eq:fgn}{{4}{6}{}{equation.4}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Accuracy and GT-Fairness as $\beta _p$ (gradient norm weight) varies from 0 (accuracy-only) to 1 (gradient-norm-only) on CIFAR-10. Dashed line: paper default $\beta _p=0.3$.}}{6}{}\protected@file@percent }
 \newlabel{fig:ablation_beta}{{3}{6}{}{figure.3}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Gas cost per smart contract call (Ganache testnet, single-client batch). \texttt  {submitAndSettle([1 client])}: 145,407 gas (base scoring + reward); stake-and-slash adds ${\approx }8{,}000$ gas per client for the threshold check and slash accounting.}}{6}{}\protected@file@percent }
-\newlabel{fig:gas}{{4}{6}{}{figure.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-F}}Sensitivity to $\beta $}{6}{}\protected@file@percent }
 \newlabel{subsec:ablation_beta}{{\mbox  {VI-F}}{6}{}{subsection.6.6}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-G}}Blockchain Overhead}{6}{}\protected@file@percent }
@@ -117,6 +116,14 @@
 \bibcite{bladefl2022}{12}
 \bibcite{poshapley2023}{13}
 \bibcite{he2026blockflmd2c}{14}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Gas cost per smart contract call (Ganache testnet, single-client batch). \texttt  {submitAndSettle([1 client])}: 145,407 gas (base scoring + reward); stake-and-slash adds ${\approx }8{,}000$ gas per client for the threshold check and slash accounting.}}{7}{}\protected@file@percent }
+\newlabel{fig:gas}{{4}{7}{}{figure.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces Measured on-chain gas cost of \texttt  {FairPoC.sol} \texttt  {submitAndSettle()} on a Ganache testnet vs.\ number of FL clients. $^\ast $projected from Eq.~\ref {eq:gas}. \texttt  {stake()} adds $52{,}656$ gas per client per round.}}{7}{}\protected@file@percent }
+\newlabel{tab:gas}{{V}{7}{}{table.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Limitations}{7}{}\protected@file@percent }
+\newlabel{sec:limitations}{{VII}{7}{}{section.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VIII}Conclusion}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{References}{7}{}\protected@file@percent }
 \bibcite{nguyen2026carpediem}{15}
 \bibcite{rashid2025tffl}{16}
 \bibcite{dong2022flock}{17}
@@ -124,12 +131,6 @@
 \bibcite{kim2019blockchained}{19}
 \bibcite{pocl2024}{20}
 \bibcite{dong2024flock}{21}
-\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces Measured on-chain gas cost of \texttt  {FairPoC.sol} \texttt  {submitAndSettle()} on a Ganache testnet vs.\ number of FL clients. $^\ast $projected from Eq.~\ref {eq:gas}. \texttt  {stake()} adds $52{,}656$ gas per client per round.}}{7}{}\protected@file@percent }
-\newlabel{tab:gas}{{V}{7}{}{table.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {VII}Limitations}{7}{}\protected@file@percent }
-\newlabel{sec:limitations}{{VII}{7}{}{section.7}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {VIII}Conclusion}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{References}{7}{}\protected@file@percent }
 \bibcite{huang2024bcontrib}{22}
 \bibcite{rashid2026tafl}{23}
 \bibcite{gtgshapley2022}{24}
@@ -137,8 +138,9 @@
 \bibcite{erc20}{26}
 \bibcite{krizhevsky2009learning}{27}
 \bibcite{xiao2017fashion}{28}
-\bibcite{ghorbani2019data}{29}
-\bibcite{jain1984quantitative}{30}
-\bibcite{ace2024attack}{31}
-\bibcite{fragility2025contrib}{32}
+\bibcite{cao2020fltrust}{29}
+\bibcite{blanchard2017krum}{30}
+\bibcite{jain1984quantitative}{31}
+\bibcite{ace2024attack}{32}
+\bibcite{fragility2025contrib}{33}
 \gdef \@abspage@last{8}

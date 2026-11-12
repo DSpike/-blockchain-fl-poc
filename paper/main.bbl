@@ -170,11 +170,16 @@ H.~Xiao, K.~Rasul, and R.~Vollgraf, ``{Fashion-MNIST}: A novel image dataset
   for benchmarking machine learning algorithms,'' \emph{arXiv preprint
   arXiv:1708.07747}, 2017.
 
-\bibitem{ghorbani2019data}
-A.~Ghorbani and J.~Zou, ``Data shapley: Equitable valuation of data for machine
-  learning,'' in \emph{Proceedings of the 36th International Conference on
-  Machine Learning (ICML)}.\hskip 1em plus 0.5em minus 0.4em\relax PMLR, 2019,
-  pp. 2242--2251.
+\bibitem{cao2020fltrust}
+X.~Cao, M.~Fang, J.~Liu, and N.~Z. Gong, ``{FLTrust}: Byzantine-robust
+  federated learning via trust bootstrapping,'' in \emph{Network and
+  Distributed System Security Symposium (NDSS)}, 2021.
+
+\bibitem{blanchard2017krum}
+P.~Blanchard, E.~M. El~Mhamdi, R.~Guerraoui, and J.~Stainer, ``Machine learning
+  with adversaries: Byzantine tolerant gradient descent,'' in \emph{Advances in
+  Neural Information Processing Systems (NeurIPS)}, vol.~30, 2017, pp.
+  119--129.
 
 \bibitem{jain1984quantitative}
 R.~Jain, D.-M. Chiu, and W.~Hawe, ``A quantitative measure of fairness and
