@@ -346,8 +346,14 @@ mapping values to $[0,1]$ within each round.
 Clients holding rare or diverse class subsets produce larger parameter
 updates because their local loss surface diverges more from the current
 global model direction.
-Under non-IID partitioning, gradient magnitude is positively correlated
-with data volume and distributional diversity.
+Under moderate non-IID partitioning, gradient magnitude is positively
+correlated with data volume and distributional diversity. This holds
+while clients retain several classes; Proposition~\ref{prop:gradnorm_limit}
+shows that the correlation with volume breaks down as class
+concentration $\rho_i \to 1$, and Corollary~\ref{cor:degrade} traces the
+resulting fairness loss. The regime boundary is visible in our results:
+the correlation supports FairPoC at $\alpha_D \geq 0.5$, and fails at
+$\alpha_D = 0.1$ on FashionMNIST.
 
 Unlike Shapley/LOO contributions, which measure marginal accuracy
 improvements and collapse to zero once the model saturates,
