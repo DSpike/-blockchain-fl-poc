@@ -53,8 +53,8 @@ proportion to their data contribution, but Shapley-based and
 leave-one-out metrics degrade once the global model converges, and
 existing systems distribute rewards through a central server with no
 public audit trail. We propose \textbf{FairPoC}, which scores
-contributions using normalised gradient norm --- stable throughout
-training --- and settles rewards through ERC-20 smart contracts with
+contributions using normalised gradient norm, which is stable throughout
+training, and settles rewards through ERC-20 smart contracts with
 stake-and-slash enforcement: clients whose Proof-of-Contribution score
 falls below 30\% of equal share are automatically slashed and
 blacklisted, with no trusted intermediary required for settlement.
@@ -89,8 +89,8 @@ describing incentive design as a foundational requirement for FL to
 operate at scale and one that must jointly address client
 heterogeneity, contribution quality, and
 fairness~\cite{ziaeinejad2026context, zhu2023blockchain}. Under
-non-IID data distributions -- where clients hold skewed, non-representative
-class subsets -- uniform reward policy over-rewards low-contribution
+non-IID data distributions (where clients hold skewed, non-representative
+class subsets), uniform reward policy over-rewards low-contribution
 clients and under-rewards those with rare, high-value
 data~\cite{zhan2021incentive, zhao2018federated}.
 
@@ -100,7 +100,7 @@ reduce participation or withdraw, degrading the
 federation~\cite{song2019profit}. Incentive mechanisms for FL have been
 studied~\cite{wang2020measure, gradient_driven_fairness2021}, but
 predominantly rely on a central server to distribute rewards with no
-externally verifiable record -- participants must trust the server's
+externally verifiable record: participants must trust the server's
 claimed allocation, which is unauditable in cross-organisational
 deployments.
 
@@ -118,7 +118,7 @@ collapse toward zero as the global model converges, making contribution
 measurement unreliable in late training stages~\cite{poshapley2023}.
 Furthermore, existing scalar contribution
 metrics~\cite{behera2021federated} are based solely on weight-update
-magnitude and do not account for distributional diversity -- a key
+magnitude and do not account for distributional diversity, a key
 dimension of value under non-IID conditions.
 
 Recent work proposes multidimensional contribution scores combining
@@ -283,7 +283,7 @@ the per-round protocol.
 The aggregator computes contribution scores and writes them to the
 contract via \texttt{submitAndSettle()}. The smart contract then executes reward
 distribution deterministically and immutably: once scores are posted,
-no party -- including the aggregator -- can alter the resulting token
+no party, including the aggregator, can alter the resulting token
 transfer. This makes the distribution step \emph{auditable and
 tamper-evident}: any participant can verify every reward on-chain. Note
 that score computation itself remains at the aggregator; full
@@ -299,7 +299,7 @@ functions encoding both reward distribution and adversarial defence.
 for each client it atomically checks whether the PoC score exceeds
 $30\%$ of equal share (a threshold that tolerates mild underperformance
 while decisively penalising near-zero free-rider scores; sensitivity
-sweep is future work) --- clients above receive proportional reward
+sweep is future work). Clients above receive proportional reward
 plus any slashed tokens; clients below are blacklisted and their stake
 is forfeited to the slash pool.
 Because settlement executes atomically on-chain, no trusted party can
@@ -346,8 +346,8 @@ global model direction.
 Under non-IID partitioning, gradient magnitude is positively correlated
 with data volume and distributional diversity.
 
-Unlike Shapley/LOO contributions --- which measure marginal accuracy
-improvements and collapse to zero once the model saturates ---
+Unlike Shapley/LOO contributions, which measure marginal accuracy
+improvements and collapse to zero once the model saturates,
 $\mathrm{GradNorm}$ reflects client $i$'s local data distribution and
 remains non-degenerate throughout training, directly addressing the
 limitation acknowledged by PoShapley-BCFL~\cite{poshapley2023}.
@@ -372,7 +372,7 @@ per-round token pool.
 The immutable \texttt{RewardDistributor} contract executes
 $r_i = (s_i / S) \cdot R$ on-chain, guaranteeing exact proportionality
 to submitted scores: $r_i / s_i = R/S$ is identical for all $i$.
-This is a \emph{distribution faithfulness} guarantee -- the on-chain
+This is a \emph{distribution faithfulness} guarantee: the on-chain
 function cannot be silently modified after deployment, making every
 reward distribution publicly auditable and tamper-evident.
 Note that score computation itself remains off-chain at the aggregator;
@@ -565,7 +565,7 @@ via a \emph{stake-and-slash} mechanism encoded in the smart contract
 round, and the contract autonomously slashes and blacklists any client
 whose on-chain PoC score falls below $30\%$ of the equal-share
 baseline, redistributing the forfeited stake to honest clients in the
-same round. No trusted third party \emph{executes the slashing decision} --- the
+same round. No trusted third party \emph{executes the slashing decision}: the
 contract code enforces the rule immutably and transparently.
 
 We evaluate three representative attacks at $\alpha_D = 0.1$
@@ -622,15 +622,15 @@ magnitude, and what removes it.
 
 Under GradScale, max-norm scoring is self-amplifying: the attacker
 becomes the normalisation maximum and suppresses honest clients to
-GradNorm$\approx 0.1$, collapsing accuracy to 17.83\% --- worse than
+GradNorm$\approx 0.1$, collapsing accuracy to 17.83\%, worse than
 FedAVG. FairPoC-MC breaks this by clipping the attacker to the median,
 recovering 68.09\% accuracy at over-reward $0.78\times$.
 For free-riders, zero gradient norm yields a score of
 $\alpha_p \cdot \mathrm{ValAcc}_{\mathrm{global}}$ which may exceed
 honest clients in late rounds; FairPoC-MC slashes the attacker every
 round (net-gain $-1.67\times$). The resulting GT-Fairness of 0.856
-is a metric artefact --- the slashed client holds $r_i{=}0$ while
-counting in Jain's denominator --- and does not reflect honest-client
+is a metric artefact (the slashed client holds $r_i{=}0$ while
+counting in Jain's denominator) and does not reflect honest-client
 fairness. Under LabelFlip, near-chance ValAcc triggers blacklisting;
 both FairPoC variants under-reward the attacker ($0.88\times$) while
 achieving the highest accuracy (74.6\%).
@@ -638,7 +638,7 @@ FashionMNIST results are consistent: free-riders are slashed on both
 variants (net-gain $-1.67\times$) and FairPoC-MC leads on GradScale
 accuracy (89.1\%). LabelFlip shows mild over-reward ($1.12\times$)
 because at $\alpha_D = 0.1$ honest clients also score low on the shared
-validation set --- a known limitation of accuracy-based scoring under
+validation set, a known limitation of accuracy-based scoring under
 severe data skew.
 
 % ==================================================================
@@ -723,7 +723,7 @@ ${\approx}8{,}000n$ gas (not shown).}
 
 All experiments run on a local Ganache testnet; gas price variability
 and public-chain latency are not captured. Score computation stays at
-the aggregator --- on-chain gradient verification for fully trustless
+the aggregator; on-chain gradient verification for fully trustless
 scoring is left to future work. The $n{=}10$ client setting is
 representative of private enterprise FL; Table~\ref{tab:gas} projects
 $O(n)$ cost to 500 clients, but accuracy at larger $n$ is not studied.
@@ -739,9 +739,9 @@ every baseline on both datasets.
 Stake-and-slash deters rational attackers but does not cryptographically
 exclude them: a patient adversary can build honest history until staking
 costs are recovered, then attack. An attacker who knows the median-clip
-rule cannot reliably exploit it --- norms are posted before the round's
+rule cannot reliably exploit it (norms are posted before the round's
 median is published, making precise targeting a fixed-point problem with
-no advance solution --- and any GradScale factor $k{>}1$ degrades
+no advance solution), and any GradScale factor $k{>}1$ degrades
 validation accuracy, further lowering the attacker's PoC score.
 Zero-knowledge gradient proofs would close this gap and are future work.
 
